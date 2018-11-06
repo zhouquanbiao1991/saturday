@@ -2,13 +2,13 @@ pipeline {
 	agent none
 	stages {
 		stage 'build' {
-			agent { docker { python:3.7 } }
+			agent { docker { image python } }
 			steps {
 				sh 'python -m compileall sources/'
 			}
 		}
 		stage 'test' {
-			agent { docker { python3-nosetests:latest } }
+			agent { docker { image python3-nosetests } }
 			steps {
 				sh 'nosetests --cover-xml-file=test_reports/cover.xml --xunit-file=test_reports/xunit.xml --with-xunit'
 			}
