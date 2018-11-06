@@ -47,7 +47,7 @@ class ModifyMission(graphene.Mutation):
     status = graphene.String()
     mission = graphene.Field(Mission)
     def mutate(self, info, id, missionName, triggerTime):
-        logging.info("modify:  mission id: %d, mission_name: %s, trigger_time: %s" % (id, mission_name, trigger_time))
+        logging.info("modify:  mission id: %d, mission_name: %s, trigger_time: %s" % (id, missionName, triggerTime))
         (id, mission_name, trigger_time, operation_status) = dao_mission.modify_mission(id, missionName, triggerTime)
         if operation_status:
             status = "success"

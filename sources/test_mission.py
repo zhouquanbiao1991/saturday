@@ -10,7 +10,7 @@ import json
 # modify_str: curl localhost:8888/ -X POST -d "mutation mymodifyMutation { modifyMission(id: 6, missionName: \"gogogo\", triggerTime: \"wait for what\") { mission { id missionName triggerTime } status } }"
 
 class TestMission(unittest.TestCase):
-    def insert_test(self, test_string):
+    def insert_t(self, test_string):
         #insert
         insert_str = "mutation myMutation { addMission(missionName: \"%s\", triggerTime: \"%s\") { mission { id missionName triggerTime } status } }" % (test_string, test_string)
         result = middleware.request(insert_str)
@@ -19,7 +19,7 @@ class TestMission(unittest.TestCase):
         self.assertEqual(result_json['addMission']["mission"]["missionName"], test_string)
         self.assertEqual(result_json['addMission']["mission"]["triggerTime"], test_string)
     
-    def query_by_missionName_and_triggerTime_test(self, test_string):
+    def query_by_missionName_and_triggerTime_t(self, test_string):
         query_str = "query myQuery { missions(missionName: \"%s\", triggerTime: \"%s\") { id, missionName, triggerTime } }" \
             % (test_string, test_string)
         result = middleware.request(query_str)
@@ -29,21 +29,21 @@ class TestMission(unittest.TestCase):
         self.assertEqual(result_json['missions'][0]['triggerTime'], test_string)
         return result_json['missions'][0]["id"]
     
-    def query_by_id_test(self, id, string):
+    def query_by_id_t(self, id, string):
         query_str = "query myQuery { missions(id: %d) { id, missionName, triggerTime } }" % id
         result = middleware.request(query_str)
         result_json = json.loads(result)
         self.assertEqual(result_json['missions'][0]["missionName"], string)
         self.assertEqual(result_json['missions'][0]['triggerTime'], string)
 
-    def modify_test(self, id, modify_test_string):
+    def modify_t(self, id, modify_test_string):
         modify_query = "mutation mymodifyMutation { modifyMission(id: %d, missionName: \"%s\", triggerTime: \"%s\") { mission { id missionName triggerTime } status } }"\
            % (id, modify_test_string, modify_test_string)
         result = middleware.request(modify_query)
         result_json = json.loads(result)
         self.assertEqual(result_json['modifyMission']['status'], "success")
 
-    def del_test(self, id):
+    def del_t(self, id):
         del_str = "mutation mydelMutation { deleteMission(id: %d) { mission { id missionName triggerTime } status } }" % id
         result = middleware.request(del_str)
         result_json = json.loads(result)
@@ -57,9 +57,9 @@ class TestMission(unittest.TestCase):
             result_python = json.loads(result)
             if result_python['missions'] == []:
                 break
-        TestMission.insert_test(self, test_string)
-        id = TestMission.query_by_missionName_and_triggerTime_test(self, test_string)
-        TestMission.query_by_id_test(self, id, test_string)
+        TestMission.insert_t(self, test_string)
+        id = TestMission.query_by_missionName_and_triggerTime_t(self, test_string)
+        TestMission.query_by_id_t(self, id, test_string)
 
         #modify
         while(1):
@@ -70,9 +70,9 @@ class TestMission(unittest.TestCase):
             result_python = json.loads(result)
             if result_python['missions'] == []:
                 break
-        TestMission.modify_test(self, id, modify_test_string)
-        TestMission.query_by_id_test(self, id, modify_test_string)
-        TestMission.del_test(self, id)
+        TestMission.modify_t(self, id, modify_test_string)
+        TestMission.query_by_id_t(self, id, modify_test_string)
+        TestMission.del_t(self, id)
 
         #query fail
         query_str = "query myQuery { missions(id: %d) { id, missionName, triggerTime } }" % id

@@ -2,7 +2,7 @@ import pymysql
 import json
 import logging
 
-sql_configuration_file = 'mysql.conf'
+sql_configuration_file = '../conf/mysql.conf'
 
 def db_conn():
     with open(sql_configuration_file) as conf_file:
