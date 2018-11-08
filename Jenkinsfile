@@ -8,13 +8,13 @@ pipeline {
 			}
 		}
 		stage('test') {
-			agent { docker { image python3-nosetests } }
+			agent { docker { image 'qnib/pytest' } }
 			steps {
-				sh 'nosetests --cover-xml-file=test_reports/cover.xml --xunit-file=test_reports/xunit.xml --with-xunit'
+				sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_mission.py'
 			}
 			post {
 				always {
-					xunit 'test_reports/xunit.xml'
+					junit 'test-reports/results.xml'
 				}
 			}
 		}
